@@ -1,5 +1,10 @@
+%% DISTRIBUÇÃO UNIFORME
+%
 % Mostra o gerador de números aleatorios
 % rand() a partir de una semente definida
+%
+% Esta função sempre vai retornar valores 
+% entre 0 e 1
 
 % s = rand('state')
 
@@ -10,7 +15,7 @@
 % s = rand('state', 0)
 % coloca o gerador em seu estado inicial
 
-% s = rand('state', 0)
+% s = rand('state', N)
 % coloca o gerador em seu N-ésimo estado
 
 % s = rand('state', sum(100*clock))

@@ -1,4 +1,4 @@
-% @brief: Distribución uniforme em [0 1]
+%% @brief: Distribución uniforme em [0 1]
 %
 % Para obtener distribuções uniformes
 % em outros intervalos [m, n]
