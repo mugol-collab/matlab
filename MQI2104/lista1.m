@@ -64,7 +64,7 @@ plot(xi, yi, 'm.', 'markersize', 20)
 plot(x, y, 'b')
 
 
-legend0 = sprintf('Pontos medidos')
+legend0 = sprintf('Pontos medidos');
 legend1 = sprintf('Interp 1 = %0.2f]', yi(1));
 legend2 = sprintf('Interp 2 = %0.2f]', yi(2));
 legend3 = sprintf('Interp 3 = %0.2f]', yi(3));
@@ -80,24 +80,55 @@ xlim([0 20]), ylim([0 2.5])
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 title('2. Interpolação Cúbica')
 xi = [0.150 0.673 1.520 1.820 2.205];
-yi = spline(x, y, xi)
+yi = spline(x, y, xi);
 hold on
 plot(xlim, [yi; yi], 'r-.')
 plot (xi,yi,'r.', 'markersize', 20)
 
-%4. Validação cruzada
+% 4. Validação cruzada
+
+figure;
+y80 = y(1:26);  % valores de ajuste polinomio 80%
+x80 = x(1:26);  % valores de distância 80%
+
+plot(x80, y80, '.', 'markersize', 20)
+title('4. Validação cruzada')
+xlim([0 20]), ylim([0 2.5])
+xlabel('Distância (cm)'), ylabel('Tensâo (V)')
+
+c1 = polyfit(x80, y80, 1)        % grau 1 de interpolação
+c3 = polyfit(x80, y80, 3)        % grau 3 de interpolação
+c5 = polyfit(x80, y80, 5)        % grau 5 de interpolação
+
+T_1 = polyval(c1, x80);          % calculo do polinomio grau 3
+T_3 = polyval(c3, x80);          % calculo do polinomio grau 3
+T_5 = polyval(c5, x80);          % calculo do polinomio grau 5
+
+e = T_5 - y80;
+MSE = mean(e.^2)
+RMSE = sqrt(MSE)
+
+hold on
+plot(x80, T_1, 'r', 'linewidth', 2)
+plot(x80, T_3, 'b', 'linewidth', 2)
+plot(x80, T_5, 'm', 'linewidth', 2)
+legend('Média tensoes calibração (V)', 'Ordem 1', 'Ordem 3', 'Ordem 5', 'Location', 'northeast')
+text(9, 1.8,'MSE  = 0.0341','FontSize',10,'Color','blue')
+text(9, 1.7,'RMSE = 0.1847','FontSize',10,'Color','blue')
+
+% 5. Calculo de distâncias a partir do polinomio de grau 5
 
 figure;
 plot(x, y, '.', 'markersize', 20)
-title('2. Validação cruzada')
+title('5. Calculo de distâncias')
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 xlim([0 20]), ylim([-0.5 2.5])
 grid on;
 
 % Regressão de ordem 1
-c1 = polyfit(x, y, 1)        % grau 1 de interpolação
-c3 = polyfit(x, y, 3)        % grau 3 de interpolação
-c5 = polyfit(x, y, 5)        % grau 5 de interpolação
+c1 = polyfit(x, y, 1);       % grau 1 de interpolação
+c3 = polyfit(x, y, 3);       % grau 3 de interpolação
+c5 = polyfit(x, y, 5);        % grau 5 de interpolação
 
 x2 = 0:0.01:20;
 
@@ -109,4 +140,8 @@ hold on
 plot(x2, T_1, 'r', 'linewidth', 2)
 plot(x2, T_3, 'b', 'linewidth', 2)
 plot(x2, T_5, 'm', 'linewidth', 2)
-legend('Média dados calibração (T)', 'Ordem 1', 'Ordem 3', 'Ordem 5', 'Location', 'northeast')
+legend('Média tensoes calibração (V)', 'Ordem 1', 'Ordem 3', 'Ordem 5 - distâncias', 'Location', 'northeast')
+
+
+
+
