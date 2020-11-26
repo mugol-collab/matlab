@@ -24,13 +24,32 @@ end
 
 x = distancias';
 y = tensaoMedia;
+    
+% Opção de interpolação 1 - entrando com medições de campo
+% no eixo x
 
+subplot(2,1,1)
 plot(x, y, '.', 'markersize', 20)
 xlim([0 20]), ylim([0 2.5])
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
-title('2. Interpolação linear')
+title('2. Interpolação linear - opção 1')
 grid on;
-% 
+xi = [0.150 0.673 1.520 1.820 2.205];
+hold on
+plot([xi;xi], ylim, 'r-.')
+yi = interp1(x, y, xi);
+plot(xi, yi, 'm.', 'markersize', 20)
+plot(x, y, 'b')
+
+
+subplot(2,1,2)
+plot(x, y, '.', 'markersize', 20)
+xlim([0 20]), ylim([0 2.5])
+xlabel('Distância (cm)'), ylabel('Tensâo (V)')
+title('2. Interpolação linear - opção 2')
+grid on;
+
+% Opção de Interpolação 2  
 %% Calculei as distâncias correspondentes a os valores
 %% de tensão dados para entrar con xi na função interp1()
 %
@@ -56,11 +75,38 @@ legend(legend0,legend1, legend2, legend3, legend4, legend5);
 % 3. Interpolação Cúbica
 
 figure;
-plot(x', y, '.', 'markersize', 20)
+plot(x, y, 'b.-')
 xlim([0 20]), ylim([0 2.5])
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 title('2. Interpolação Cúbica')
 xi = [0.150 0.673 1.520 1.820 2.205];
 yi = spline(x, y, xi)
 hold on
+plot(xlim, [yi; yi], 'r-.')
 plot (xi,yi,'r.', 'markersize', 20)
+
+%4. Validação cruzada
+
+figure;
+plot(x, y, '.', 'markersize', 20)
+title('2. Validação cruzada')
+xlabel('Distância (cm)'), ylabel('Tensâo (V)')
+xlim([0 20]), ylim([-0.5 2.5])
+grid on;
+
+% Regressão de ordem 1
+c1 = polyfit(x, y, 1)        % grau 1 de interpolação
+c3 = polyfit(x, y, 3)        % grau 3 de interpolação
+c5 = polyfit(x, y, 5)        % grau 5 de interpolação
+
+x2 = 0:0.01:20;
+
+T_1 = polyval(c1, x2);      % calculo do polinomio grau 1
+T_3 = polyval(c3, x2);      % calculo do polinomio grau 3
+T_5 = polyval(c5, x2);      % calculo do polinomio grau 5
+
+hold on
+plot(x2, T_1, 'r', 'linewidth', 2)
+plot(x2, T_3, 'b', 'linewidth', 2)
+plot(x2, T_5, 'm', 'linewidth', 2)
+legend('Média dados calibração (T)', 'Ordem 1', 'Ordem 3', 'Ordem 5', 'Location', 'northeast')
