@@ -23,40 +23,23 @@ end
 % 2. Interpolação linear
 
 x = distancias';
-y = tensaoMedia;
+y = tensaoMedia
     
-% Opção de interpolação 1 - entrando com medições de campo
-% no eixo x
 
-subplot(2,1,1)
+%% Calculei as distâncias correspondentes a os valores
+%% de tensão dados para entrar con xi na função interp1()
+
 plot(x, y, '.', 'markersize', 20)
 xlim([0 20]), ylim([0 2.5])
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 title('2. Interpolação linear - opção 1')
-grid on;
-xi = [0.150 0.673 1.520 1.820 2.205];
+
 hold on
-plot([xi;xi], ylim, 'r-.')
-yi = interp1(x, y, xi);
-plot(xi, yi, 'm.', 'markersize', 20)
-plot(x, y, 'b')
-
-
-subplot(2,1,2)
-plot(x, y, '.', 'markersize', 20)
-xlim([0 20]), ylim([0 2.5])
-xlabel('Distância (cm)'), ylabel('Tensâo (V)')
-title('2. Interpolação linear - opção 2')
 grid on;
-
-% Opção de Interpolação 2  
-%% Calculei as distâncias correspondentes a os valores
-%% de tensão dados para entrar con xi na função interp1()
-%
+ 
 yi = [0.150 0.673 1.520 1.820 2.205];
-xi = [0.030969 0.138946 0.370085 0.486636 1.591463];
-%
-hold on
+xi = table2array(readtable("lista1.xlsx", "Range", "S3:S7"));
+
 plot(xlim, [yi; yi], 'r-.')
 % xi = interp1(x, y, yi);
 yi = interp1(x, y, xi);
