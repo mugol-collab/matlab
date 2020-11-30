@@ -11,11 +11,11 @@ ylim([0 5.5])
 
 X0 = [1 1];
 options = optimset(@lsqnonlin)
-X = lsqnonlin('filtroRC', X0, [], [], options, Vin, t, Vout_e)
+X = lsqnonlin('aula02_filtroRC', X0, [], [], options, Vin, t, Vout_e)
 
-function erro = filtroRC(X, Vin, t, Vout_e)
-    R = X(1);
-    C = X (2);
-    Vout = Vin * (1 - exp(-t/(R*C)));
-    erro = Vout - Vout_e;
-end
+% function erro = filtroRC(X, Vin, t, Vout_e)
+%     R = X(1);
+%     C = X (2);
+%     Vout = Vin * (1 - exp(-t/(R*C)));
+%     erro = Vout - Vout_e;
+% end
