@@ -96,8 +96,8 @@ title('4. Validação cruzada')
 xlim([0 20]), ylim([0 2.5])
 xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 
-c1 = polyfit(x80, y80, 1)        % grau 1 de interpolação
-c3 = polyfit(x80, y80, 3)        % grau 3 de interpolação
+c1 = polyfit(x80, y80, 1);        % grau 1 de interpolação
+c3 = polyfit(x80, y80, 3);        % grau 3 de interpolação
 c5 = polyfit(x80, y80, 5)        % grau 5 de interpolação
 
 T_1 = polyval(c1, x80);          % calculo do polinomio grau 3
@@ -125,23 +125,35 @@ xlabel('Distância (cm)'), ylabel('Tensâo (V)')
 xlim([0 20]), ylim([-0.5 2.5])
 grid on;
 
-% Regressão de ordem 1
-c1 = polyfit(x, y, 1);       % grau 1 de interpolação
-c3 = polyfit(x, y, 3);       % grau 3 de interpolação
+% Regressão de ordem 5
 c5 = polyfit(x, y, 5);        % grau 5 de interpolação
-
 x2 = 0:0.01:20;
-
-T_1 = polyval(c1, x2);      % calculo do polinomio grau 1
-T_3 = polyval(c3, x2);      % calculo do polinomio grau 3
 T_5 = polyval(c5, x2);      % calculo do polinomio grau 5
 
 hold on
-plot(x2, T_1, 'r', 'linewidth', 2)
-plot(x2, T_3, 'b', 'linewidth', 2)
 plot(x2, T_5, 'm', 'linewidth', 2)
-legend('Média tensoes calibração (V)', 'Ordem 1', 'Ordem 3', 'Ordem 5 - distâncias', 'Location', 'northeast')
+legend('Média tensoes calibração (V)', 'distancias', 'Location', 'northeast')
 
+% 6. Funções não lineares
+%% Erro na função optimset(@lsqnonlin) - versao 2020b
 
+Vin = 20;
+t = distancias;
+Vout_e = tensaoMedia;
+figure;
+plot(t, Vout_e, '.-', 'markersize', 20)
+xlim([0 20]), ylim([0 2.5])
+xlabel('Distância (cm)'), ylabel('Tensâo (V)')
+title('6. Valores Vo, t1 e t2')
 
-
+% tao = [1 1];
+% % options = optimset(@lsqnonlin)
+% options = [];
+% V = lsqnonlin('filtroRC', tao, [], [], options, Vin, t, Vout_e)
+% 
+% function erro = funcaoSensor(tao, Vin, t, Vout_e)
+%     tao1 = tao(1);
+%     tao2 = tao(2);
+%     Vout = Vin * ((exp(-t/tao1)) - (exp(-t/tao2)));
+%     erro = Vout - Vout_e;
+% end
