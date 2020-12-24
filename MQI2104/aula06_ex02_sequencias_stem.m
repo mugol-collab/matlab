@@ -8,9 +8,11 @@ clc;
 clear all;
 close all;
 
-n = -3:1;
+n = -3:1
+n0 = min(n);
 x = [1 3 7 5 11];
 stem(n, x)
 xlim([-4 2]), ylim([0 15])
 
 [n; x(n - min(n) + 1)]
+
